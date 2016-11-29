@@ -5,3 +5,6 @@
 *.class
 *.jar
 
+# ANTLR
+*.tokens
+

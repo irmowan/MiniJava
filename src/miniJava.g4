@@ -1,6 +1,39 @@
 grammar miniJava;
 
-r       : 'hello' ID ;         // match keyword hello followed by an identifier
+goal    : mainClass (classDec)* EOF;
+
+// parser rules
+mainClass: 'class' ID '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' ID ')' '{' statement '}' '}';
+classDec : 'class' ID (EXTENDS ID)? '{' (varDec)* (methodDec)* '}';
+varDec   : type ID ';';
+methodDec: PUBLIC type ID '(' (type ID (',' type ID)*)? ')' '{' (varDec)* (statement)* RETURN expr ';' '}';
+type    : INT '[' ']'
+        | BOOLEAN
+        | INT
+        | ID
+        ;
+statement: '{' (statement)* '}'
+         | IF '(' expr ')' statement ELSE statement
+         | WHILE '(' expr ')' statement
+         | 'System.out.println' '(' expr ')' ';'
+         | ID '=' expr ';'
+         | ID '[' expr ']' '=' expr ';'
+         ;
+expr    : expr ('&&' | '<' | '+' | '-' | '*') expr
+        | expr '[' expr ']'
+        | expr '.' LENGTH
+        | expr '.' ID '(' (expr (',' expr)*)? ')'
+        | INT_VAL
+        | TRUE
+        | FALSE
+        | ID
+        | THIS
+        | NEW INT '[' expr ']'
+        | NEW ID '(' ')'
+        | '!' expr
+        | '(' expr ')'
+        ;
+
 WS      : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
 
 // Keywords
@@ -8,7 +41,7 @@ BOOLEAN : 'boolean';
 CLASS   : 'class';
 ELSE    : 'else';
 EXTENDS : 'extends';
-FLASE   : 'false';
+FALSE   : 'false';
 IF      : 'if';
 INT     : 'int';
 LENGTH  : 'length';
@@ -17,7 +50,7 @@ NEW     : 'new';
 PUBLIC  : 'public';
 RETURN  : 'return';
 STATIC  : 'static';
-STRING  : 'string';
+STRING  : 'String';
 THIS    : 'this';
 TRUE    : 'true';
 VOID    : 'void';
@@ -47,9 +80,8 @@ DOT     : '.';
 SEMI    : ';';
 
 // Identifier
-U_LETTER: [A-Z];
-L_LETTER: [a-z];
-LETTER  : U_LETTER | L_LETTER;
-DIGIT   : [0-9];
 ID      : LETTER (LETTER | DIGIT)*;
+INT_VAL : ('0' | [1-9] DIGIT*);
+LETTER  : [a-zA-Z_];
+DIGIT   : [0-9];
 
