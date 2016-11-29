@@ -1,5 +1,8 @@
 grammar miniJava;
 
+r       : 'hello' ID ;         // match keyword hello followed by an identifier
+WS      : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
+
 // Keywords
 BOOLEAN : 'boolean';
 CLASS   : 'class';
@@ -50,5 +53,3 @@ LETTER  : U_LETTER | L_LETTER;
 DIGIT   : [0-9];
 ID      : LETTER (LETTER | DIGIT)*;
 
-HELLO   : 'hello' ID ;         // match keyword hello followed by an identifier
-WS      : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
