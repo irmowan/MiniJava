@@ -21,7 +21,7 @@ public class miniJavaParser extends Parser {
 		THIS=17, TRUE=18, VOID=19, WHILE=20, ASSIGN=21, GT=22, LT=23, GE=24, LE=25, 
 		PLUS=26, MINUS=27, BANG=28, AND=29, OR=30, L_PAREN=31, R_PAREN=32, L_BRACK=33, 
 		R_BRACK=34, L_BRACE=35, R_BRACE=36, COMMA=37, DOT=38, SEMI=39, ID=40, 
-		INT_VAL=41, LETTER=42, DIGIT=43, WS=44, COMMENT=45, LINE_COMMENT=46;
+		INT_VAL=41, LETTER=42, DIGIT=43, SIGN=44, WS=45, COMMENT=46, LINE_COMMENT=47;
 	public static final int
 		RULE_goal = 0, RULE_mainClass = 1, RULE_classDec = 2, RULE_varDec = 3, 
 		RULE_methodDec = 4, RULE_type = 5, RULE_statement = 6, RULE_expr = 7;
@@ -43,7 +43,7 @@ public class miniJavaParser extends Parser {
 		"THIS", "TRUE", "VOID", "WHILE", "ASSIGN", "GT", "LT", "GE", "LE", "PLUS", 
 		"MINUS", "BANG", "AND", "OR", "L_PAREN", "R_PAREN", "L_BRACK", "R_BRACK", 
 		"L_BRACE", "R_BRACE", "COMMA", "DOT", "SEMI", "ID", "INT_VAL", "LETTER", 
-		"DIGIT", "WS", "COMMENT", "LINE_COMMENT"
+		"DIGIT", "SIGN", "WS", "COMMENT", "LINE_COMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -1009,7 +1009,7 @@ public class miniJavaParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\60\u00d5\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\61\u00d5\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\7\2\25"+
 		"\n\2\f\2\16\2\30\13\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\5\4\62\n\4\3\4\3\4\7"+
