@@ -34,8 +34,6 @@ expr    : expr ('&&' | '<' | '+' | '-' | '*') expr
         | '(' expr ')'
         ;
 
-WS      : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
-
 // Keywords
 BOOLEAN : 'boolean';
 CLASS   : 'class';
@@ -85,3 +83,7 @@ INT_VAL : ('0' | [1-9] DIGIT*);
 LETTER  : [a-zA-Z_];
 DIGIT   : [0-9];
 
+// whitespaces and comments
+WS      : [ \t\r\n]+ -> skip ;
+COMMENT : '/*' .*? '*/' -> skip;
+LINE_COMMENT: '//' ~[\r\n]* -> skip;
