@@ -12,12 +12,12 @@ type    : INT '[' ']'
         | INT
         | ID
         ;
-statement: '{' (statement)* '}'
-         | IF '(' expr ')' statement ELSE statement
-         | WHILE '(' expr ')' statement
-         | 'System.out.println' '(' expr ')' ';'
-         | ID '=' expr ';'
-         | ID '[' expr ']' '=' expr ';'
+statement: '{' (statement)* '}'                         #BraceStatement
+         | IF '(' expr ')' statement ELSE statement     #IfStatement
+         | WHILE '(' expr ')' statement                 #WhileStatement
+         | 'System.out.println' '(' expr ')' ';'        #PrintStatement
+         | ID '=' expr ';'                              #AssignStatement
+         | ID '[' expr ']' '=' expr ';'                 #AssignArrayStatement
          ;
 expr    : expr ('&&' | '<' | '+' | '-' | '*') expr
         | expr '[' expr ']'
@@ -80,8 +80,11 @@ SEMI    : ';';
 // Identifier
 ID      : LETTER (LETTER | DIGIT)*;
 INT_VAL : SIGN? ('0' | [1-9] DIGIT*);
+fragment
 LETTER  : [a-zA-Z_];
+fragment
 DIGIT   : [0-9];
+fragment
 SIGN    : [+-];
 
 // whitespaces and comments

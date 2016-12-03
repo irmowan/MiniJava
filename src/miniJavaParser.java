@@ -21,7 +21,7 @@ public class MiniJavaParser extends Parser {
 		THIS=17, TRUE=18, VOID=19, WHILE=20, ASSIGN=21, GT=22, LT=23, GE=24, LE=25, 
 		PLUS=26, MINUS=27, BANG=28, AND=29, OR=30, L_PAREN=31, R_PAREN=32, L_BRACK=33, 
 		R_BRACK=34, L_BRACE=35, R_BRACE=36, COMMA=37, DOT=38, SEMI=39, ID=40, 
-		INT_VAL=41, LETTER=42, DIGIT=43, SIGN=44, WS=45, COMMENT=46, LINE_COMMENT=47;
+		INT_VAL=41, WS=42, COMMENT=43, LINE_COMMENT=44;
 	public static final int
 		RULE_prog = 0, RULE_mainClass = 1, RULE_classDec = 2, RULE_varDec = 3, 
 		RULE_methodDec = 4, RULE_type = 5, RULE_statement = 6, RULE_expr = 7;
@@ -42,8 +42,8 @@ public class MiniJavaParser extends Parser {
 		"INT", "LENGTH", "MAIN", "NEW", "PUBLIC", "RETURN", "STATIC", "STRING", 
 		"THIS", "TRUE", "VOID", "WHILE", "ASSIGN", "GT", "LT", "GE", "LE", "PLUS", 
 		"MINUS", "BANG", "AND", "OR", "L_PAREN", "R_PAREN", "L_BRACK", "R_BRACK", 
-		"L_BRACE", "R_BRACE", "COMMA", "DOT", "SEMI", "ID", "INT_VAL", "LETTER", 
-		"DIGIT", "SIGN", "WS", "COMMENT", "LINE_COMMENT"
+		"L_BRACE", "R_BRACE", "COMMA", "DOT", "SEMI", "ID", "INT_VAL", "WS", "COMMENT", 
+		"LINE_COMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -593,33 +593,118 @@ public class MiniJavaParser extends Parser {
 	}
 
 	public static class StatementContext extends ParserRuleContext {
+		public StatementContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_statement; }
+	 
+		public StatementContext() { }
+		public void copyFrom(StatementContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class IfStatementContext extends StatementContext {
+		public TerminalNode IF() { return getToken(MiniJavaParser.IF, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
 		}
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
 		}
-		public TerminalNode IF() { return getToken(MiniJavaParser.IF, 0); }
+		public TerminalNode ELSE() { return getToken(MiniJavaParser.ELSE, 0); }
+		public IfStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterIfStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitIfStatement(this);
+		}
+	}
+	public static class BraceStatementContext extends StatementContext {
+		public List<StatementContext> statement() {
+			return getRuleContexts(StatementContext.class);
+		}
+		public StatementContext statement(int i) {
+			return getRuleContext(StatementContext.class,i);
+		}
+		public BraceStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterBraceStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitBraceStatement(this);
+		}
+	}
+	public static class PrintStatementContext extends StatementContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public PrintStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterPrintStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitPrintStatement(this);
+		}
+	}
+	public static class WhileStatementContext extends StatementContext {
+		public TerminalNode WHILE() { return getToken(MiniJavaParser.WHILE, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public StatementContext statement() {
+			return getRuleContext(StatementContext.class,0);
+		}
+		public WhileStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterWhileStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitWhileStatement(this);
+		}
+	}
+	public static class AssignStatementContext extends StatementContext {
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public AssignStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterAssignStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitAssignStatement(this);
+		}
+	}
+	public static class AssignArrayStatementContext extends StatementContext {
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public TerminalNode ELSE() { return getToken(MiniJavaParser.ELSE, 0); }
-		public TerminalNode WHILE() { return getToken(MiniJavaParser.WHILE, 0); }
-		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
-		public StatementContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_statement; }
+		public AssignArrayStatementContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterStatement(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterAssignArrayStatement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitStatement(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitAssignArrayStatement(this);
 		}
 	}
 
@@ -632,6 +717,7 @@ public class MiniJavaParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
+				_localctx = new BraceStatementContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(112);
@@ -655,6 +741,7 @@ public class MiniJavaParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new IfStatementContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(120);
@@ -674,6 +761,7 @@ public class MiniJavaParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new WhileStatementContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(128);
@@ -689,6 +777,7 @@ public class MiniJavaParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new PrintStatementContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(134);
@@ -704,6 +793,7 @@ public class MiniJavaParser extends Parser {
 				}
 				break;
 			case 5:
+				_localctx = new AssignStatementContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(140);
@@ -717,6 +807,7 @@ public class MiniJavaParser extends Parser {
 				}
 				break;
 			case 6:
+				_localctx = new AssignArrayStatementContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(145);
@@ -1009,8 +1100,8 @@ public class MiniJavaParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\61\u00d5\4\2\t\2"+
-		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\7\2\25"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3.\u00d5\4\2\t\2\4"+
+		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\7\2\25"+
 		"\n\2\f\2\16\2\30\13\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\5\4\62\n\4\3\4\3\4\7"+
 		"\4\66\n\4\f\4\16\49\13\4\3\4\7\4<\n\4\f\4\16\4?\13\4\3\4\3\4\3\5\3\5\3"+
