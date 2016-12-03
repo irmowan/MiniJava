@@ -3,7 +3,6 @@
 import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-import org.antlr.v4.gui.TestRig;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -15,6 +14,13 @@ public class Test {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MiniJavaParser parser = new MiniJavaParser(tokens);
         ParseTree tree = parser.prog();
+
+        // Check symbols
+        ParseTreeWalker walker = new ParseTreeWalker();
+        DefPhase def = new DefPhase();
+        walker.walk(def, tree);
+        RefPhase ref = new RefPhase(def.getScopes(), def.getGlobals());
+        walker.walk(ref, tree);
 
         // Show AST in console
         System.out.println(tree.toStringTree(parser));
