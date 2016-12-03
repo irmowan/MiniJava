@@ -1,5 +1,7 @@
 public interface Scope {
-    Scope getScope();
+    Scope getOuterScope();
+
     void define(Symbol sym);
+
     Symbol lookup(String name);
 }
