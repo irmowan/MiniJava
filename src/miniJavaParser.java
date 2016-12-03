@@ -1,4 +1,4 @@
-// Generated from miniJava.g4 by ANTLR 4.5.3
+// Generated from MiniJava.g4 by ANTLR 4.5.3
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class miniJavaParser extends Parser {
+public class MiniJavaParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -79,7 +79,7 @@ public class miniJavaParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "miniJava.g4"; }
+	public String getGrammarFileName() { return "MiniJava.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -90,7 +90,7 @@ public class miniJavaParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public miniJavaParser(TokenStream input) {
+	public MiniJavaParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
@@ -98,7 +98,7 @@ public class miniJavaParser extends Parser {
 		public MainClassContext mainClass() {
 			return getRuleContext(MainClassContext.class,0);
 		}
-		public TerminalNode EOF() { return getToken(miniJavaParser.EOF, 0); }
+		public TerminalNode EOF() { return getToken(MiniJavaParser.EOF, 0); }
 		public List<ClassDecContext> classDec() {
 			return getRuleContexts(ClassDecContext.class);
 		}
@@ -111,11 +111,11 @@ public class miniJavaParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_goal; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).enterGoal(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterGoal(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).exitGoal(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitGoal(this);
 		}
 	}
 
@@ -158,15 +158,15 @@ public class miniJavaParser extends Parser {
 	}
 
 	public static class MainClassContext extends ParserRuleContext {
-		public List<TerminalNode> ID() { return getTokens(miniJavaParser.ID); }
+		public List<TerminalNode> ID() { return getTokens(MiniJavaParser.ID); }
 		public TerminalNode ID(int i) {
-			return getToken(miniJavaParser.ID, i);
+			return getToken(MiniJavaParser.ID, i);
 		}
-		public TerminalNode PUBLIC() { return getToken(miniJavaParser.PUBLIC, 0); }
-		public TerminalNode STATIC() { return getToken(miniJavaParser.STATIC, 0); }
-		public TerminalNode VOID() { return getToken(miniJavaParser.VOID, 0); }
-		public TerminalNode MAIN() { return getToken(miniJavaParser.MAIN, 0); }
-		public TerminalNode STRING() { return getToken(miniJavaParser.STRING, 0); }
+		public TerminalNode PUBLIC() { return getToken(MiniJavaParser.PUBLIC, 0); }
+		public TerminalNode STATIC() { return getToken(MiniJavaParser.STATIC, 0); }
+		public TerminalNode VOID() { return getToken(MiniJavaParser.VOID, 0); }
+		public TerminalNode MAIN() { return getToken(MiniJavaParser.MAIN, 0); }
+		public TerminalNode STRING() { return getToken(MiniJavaParser.STRING, 0); }
 		public StatementContext statement() {
 			return getRuleContext(StatementContext.class,0);
 		}
@@ -176,11 +176,11 @@ public class miniJavaParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_mainClass; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).enterMainClass(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterMainClass(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).exitMainClass(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitMainClass(this);
 		}
 	}
 
@@ -238,11 +238,11 @@ public class miniJavaParser extends Parser {
 	}
 
 	public static class ClassDecContext extends ParserRuleContext {
-		public List<TerminalNode> ID() { return getTokens(miniJavaParser.ID); }
+		public List<TerminalNode> ID() { return getTokens(MiniJavaParser.ID); }
 		public TerminalNode ID(int i) {
-			return getToken(miniJavaParser.ID, i);
+			return getToken(MiniJavaParser.ID, i);
 		}
-		public TerminalNode EXTENDS() { return getToken(miniJavaParser.EXTENDS, 0); }
+		public TerminalNode EXTENDS() { return getToken(MiniJavaParser.EXTENDS, 0); }
 		public List<VarDecContext> varDec() {
 			return getRuleContexts(VarDecContext.class);
 		}
@@ -261,11 +261,11 @@ public class miniJavaParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_classDec; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).enterClassDec(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterClassDec(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).exitClassDec(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitClassDec(this);
 		}
 	}
 
@@ -340,18 +340,18 @@ public class miniJavaParser extends Parser {
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
-		public TerminalNode ID() { return getToken(miniJavaParser.ID, 0); }
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
 		public VarDecContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_varDec; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).enterVarDec(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterVarDec(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).exitVarDec(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitVarDec(this);
 		}
 	}
 
@@ -381,18 +381,18 @@ public class miniJavaParser extends Parser {
 	}
 
 	public static class MethodDecContext extends ParserRuleContext {
-		public TerminalNode PUBLIC() { return getToken(miniJavaParser.PUBLIC, 0); }
+		public TerminalNode PUBLIC() { return getToken(MiniJavaParser.PUBLIC, 0); }
 		public List<TypeContext> type() {
 			return getRuleContexts(TypeContext.class);
 		}
 		public TypeContext type(int i) {
 			return getRuleContext(TypeContext.class,i);
 		}
-		public List<TerminalNode> ID() { return getTokens(miniJavaParser.ID); }
+		public List<TerminalNode> ID() { return getTokens(MiniJavaParser.ID); }
 		public TerminalNode ID(int i) {
-			return getToken(miniJavaParser.ID, i);
+			return getToken(MiniJavaParser.ID, i);
 		}
-		public TerminalNode RETURN() { return getToken(miniJavaParser.RETURN, 0); }
+		public TerminalNode RETURN() { return getToken(MiniJavaParser.RETURN, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
@@ -414,11 +414,11 @@ public class miniJavaParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_methodDec; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).enterMethodDec(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterMethodDec(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).exitMethodDec(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitMethodDec(this);
 		}
 	}
 
@@ -523,20 +523,20 @@ public class miniJavaParser extends Parser {
 	}
 
 	public static class TypeContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(miniJavaParser.INT, 0); }
-		public TerminalNode BOOLEAN() { return getToken(miniJavaParser.BOOLEAN, 0); }
-		public TerminalNode ID() { return getToken(miniJavaParser.ID, 0); }
+		public TerminalNode INT() { return getToken(MiniJavaParser.INT, 0); }
+		public TerminalNode BOOLEAN() { return getToken(MiniJavaParser.BOOLEAN, 0); }
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).enterType(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterType(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).exitType(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitType(this);
 		}
 	}
 
@@ -599,27 +599,27 @@ public class miniJavaParser extends Parser {
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
 		}
-		public TerminalNode IF() { return getToken(miniJavaParser.IF, 0); }
+		public TerminalNode IF() { return getToken(MiniJavaParser.IF, 0); }
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public TerminalNode ELSE() { return getToken(miniJavaParser.ELSE, 0); }
-		public TerminalNode WHILE() { return getToken(miniJavaParser.WHILE, 0); }
-		public TerminalNode ID() { return getToken(miniJavaParser.ID, 0); }
+		public TerminalNode ELSE() { return getToken(MiniJavaParser.ELSE, 0); }
+		public TerminalNode WHILE() { return getToken(MiniJavaParser.WHILE, 0); }
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).enterStatement(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterStatement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).exitStatement(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitStatement(this);
 		}
 	}
 
@@ -749,31 +749,31 @@ public class miniJavaParser extends Parser {
 	}
 
 	public static class ExprContext extends ParserRuleContext {
-		public TerminalNode INT_VAL() { return getToken(miniJavaParser.INT_VAL, 0); }
-		public TerminalNode TRUE() { return getToken(miniJavaParser.TRUE, 0); }
-		public TerminalNode FALSE() { return getToken(miniJavaParser.FALSE, 0); }
-		public TerminalNode ID() { return getToken(miniJavaParser.ID, 0); }
-		public TerminalNode THIS() { return getToken(miniJavaParser.THIS, 0); }
-		public TerminalNode NEW() { return getToken(miniJavaParser.NEW, 0); }
-		public TerminalNode INT() { return getToken(miniJavaParser.INT, 0); }
+		public TerminalNode INT_VAL() { return getToken(MiniJavaParser.INT_VAL, 0); }
+		public TerminalNode TRUE() { return getToken(MiniJavaParser.TRUE, 0); }
+		public TerminalNode FALSE() { return getToken(MiniJavaParser.FALSE, 0); }
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
+		public TerminalNode THIS() { return getToken(MiniJavaParser.THIS, 0); }
+		public TerminalNode NEW() { return getToken(MiniJavaParser.NEW, 0); }
+		public TerminalNode INT() { return getToken(MiniJavaParser.INT, 0); }
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public TerminalNode LENGTH() { return getToken(miniJavaParser.LENGTH, 0); }
+		public TerminalNode LENGTH() { return getToken(MiniJavaParser.LENGTH, 0); }
 		public ExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expr; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).enterExpr(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof miniJavaListener ) ((miniJavaListener)listener).exitExpr(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitExpr(this);
 		}
 	}
 

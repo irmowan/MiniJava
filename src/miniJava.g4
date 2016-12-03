@@ -1,4 +1,4 @@
-grammar miniJava;
+grammar MiniJava;
 
 goal    : mainClass (classDec)* EOF;
 
