@@ -79,13 +79,11 @@ SEMI    : ';';
 
 // Identifier
 ID      : LETTER (LETTER | DIGIT)*;
-INT_VAL : SIGN? ('0' | [1-9] DIGIT*);
+INT_VAL : ('0' | [1-9] DIGIT*);
 fragment
 LETTER  : [a-zA-Z_];
 fragment
 DIGIT   : [0-9];
-fragment
-SIGN    : [+-];
 
 // whitespaces and comments
 WS      : [ \t\r\n]+ -> skip ;
