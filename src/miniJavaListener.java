@@ -7,15 +7,15 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface MiniJavaListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link MiniJavaParser#goal}.
+	 * Enter a parse tree produced by {@link MiniJavaParser#prog}.
 	 * @param ctx the parse tree
 	 */
-	void enterGoal(MiniJavaParser.GoalContext ctx);
+	void enterProg(MiniJavaParser.ProgContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MiniJavaParser#goal}.
+	 * Exit a parse tree produced by {@link MiniJavaParser#prog}.
 	 * @param ctx the parse tree
 	 */
-	void exitGoal(MiniJavaParser.GoalContext ctx);
+	void exitProg(MiniJavaParser.ProgContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MiniJavaParser#mainClass}.
 	 * @param ctx the parse tree

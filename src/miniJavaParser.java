@@ -23,10 +23,10 @@ public class MiniJavaParser extends Parser {
 		R_BRACK=34, L_BRACE=35, R_BRACE=36, COMMA=37, DOT=38, SEMI=39, ID=40, 
 		INT_VAL=41, LETTER=42, DIGIT=43, SIGN=44, WS=45, COMMENT=46, LINE_COMMENT=47;
 	public static final int
-		RULE_goal = 0, RULE_mainClass = 1, RULE_classDec = 2, RULE_varDec = 3, 
+		RULE_prog = 0, RULE_mainClass = 1, RULE_classDec = 2, RULE_varDec = 3, 
 		RULE_methodDec = 4, RULE_type = 5, RULE_statement = 6, RULE_expr = 7;
 	public static final String[] ruleNames = {
-		"goal", "mainClass", "classDec", "varDec", "methodDec", "type", "statement", 
+		"prog", "mainClass", "classDec", "varDec", "methodDec", "type", "statement", 
 		"expr"
 	};
 
@@ -94,7 +94,7 @@ public class MiniJavaParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
-	public static class GoalContext extends ParserRuleContext {
+	public static class ProgContext extends ParserRuleContext {
 		public MainClassContext mainClass() {
 			return getRuleContext(MainClassContext.class,0);
 		}
@@ -105,23 +105,23 @@ public class MiniJavaParser extends Parser {
 		public ClassDecContext classDec(int i) {
 			return getRuleContext(ClassDecContext.class,i);
 		}
-		public GoalContext(ParserRuleContext parent, int invokingState) {
+		public ProgContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_goal; }
+		@Override public int getRuleIndex() { return RULE_prog; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterGoal(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterProg(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitGoal(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitProg(this);
 		}
 	}
 
-	public final GoalContext goal() throws RecognitionException {
-		GoalContext _localctx = new GoalContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_goal);
+	public final ProgContext prog() throws RecognitionException {
+		ProgContext _localctx = new ProgContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_prog);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);

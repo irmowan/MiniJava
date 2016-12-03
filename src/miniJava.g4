@@ -1,6 +1,6 @@
 grammar MiniJava;
 
-goal    : mainClass (classDec)* EOF;
+prog    : mainClass (classDec)* EOF;
 
 // parser rules
 mainClass: 'class' ID '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' ID ')' '{' statement '}' '}';

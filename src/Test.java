@@ -14,7 +14,7 @@ public class Test {
         MiniJavaLexer lexer = new MiniJavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MiniJavaParser parser = new MiniJavaParser(tokens);
-        ParseTree tree = parser.goal();
+        ParseTree tree = parser.prog();
 
         // Show AST in console
         System.out.println(tree.toStringTree(parser));

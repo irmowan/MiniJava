@@ -15,13 +15,13 @@ public class MiniJavaBaseListener implements MiniJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGoal(MiniJavaParser.GoalContext ctx) { }
+	@Override public void enterProg(MiniJavaParser.ProgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitGoal(MiniJavaParser.GoalContext ctx) { }
+	@Override public void exitProg(MiniJavaParser.ProgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
