@@ -1,32 +1,23 @@
 public class Symbol {
     private String name;
-    private Type type;
+    private SymbolType symbolType;
     private Scope scope;
-    private String typeName;
 
     public Symbol(String name) {
-        this.setName(name);
+        this.name = name;
     }
 
-    public Symbol(String name, Type type) {
-        this.setName(name);
-        this.setType(type);
+    public Symbol(String name, SymbolType symbolType) {
+        this.name = name;
+        this.symbolType = symbolType;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
+    public SymbolType getSymbolType() {
+        return symbolType;
     }
 
     public Scope getScope() {
@@ -35,13 +26,5 @@ public class Symbol {
 
     public void setScope(Scope scope) {
         this.scope = scope;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 }
