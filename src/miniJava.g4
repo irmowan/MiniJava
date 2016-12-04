@@ -19,19 +19,19 @@ statement: '{' (statement)* '}'                         #BraceStatement
          | ID '=' expr ';'                              #AssignStatement
          | ID '[' expr ']' '=' expr ';'                 #AssignArrayStatement
          ;
-expr    : expr ('&&' | '<' | '+' | '-' | '*') expr
-        | expr '[' expr ']'
-        | expr '.' LENGTH
-        | expr '.' ID '(' (expr (',' expr)*)? ')'
-        | INT_VAL
-        | TRUE
-        | FALSE
-        | ID
-        | THIS
-        | NEW INT '[' expr ']'
-        | NEW ID '(' ')'
-        | '!' expr
-        | '(' expr ')'
+expr    : expr ('&&' | '<' | '+' | '-' | '*') expr      #OperateExpr
+        | expr '[' expr ']'                             #IndexExpr
+        | expr '.' LENGTH                               #LenghExpr
+        | expr '.' ID '(' (expr (',' expr)*)? ')'       #CallExpr
+        | INT_VAL                   #IntExpr
+        | TRUE                      #TrueExpr
+        | FALSE                     #FalseExpr
+        | ID                        #IDExpr
+        | THIS                      #ThisExpr
+        | NEW INT '[' expr ']'      #NewIntArrayExpr
+        | NEW ID '(' ')'            #NewClassInstanceExpr
+        | '!' expr                  #ComplementationExpr
+        | '(' expr ')'              #ParenthesisExpr
         ;
 
 // Keywords

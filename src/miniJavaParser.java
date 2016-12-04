@@ -886,31 +886,198 @@ public class MiniJavaParser extends Parser {
 	}
 
 	public static class ExprContext extends ParserRuleContext {
-		public TerminalNode INT_VAL() { return getToken(MiniJavaParser.INT_VAL, 0); }
-		public TerminalNode TRUE() { return getToken(MiniJavaParser.TRUE, 0); }
-		public TerminalNode FALSE() { return getToken(MiniJavaParser.FALSE, 0); }
-		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
-		public TerminalNode THIS() { return getToken(MiniJavaParser.THIS, 0); }
-		public TerminalNode NEW() { return getToken(MiniJavaParser.NEW, 0); }
-		public TerminalNode INT() { return getToken(MiniJavaParser.INT, 0); }
+		public ExprContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_expr; }
+	 
+		public ExprContext() { }
+		public void copyFrom(ExprContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class OperateExprContext extends ExprContext {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public TerminalNode LENGTH() { return getToken(MiniJavaParser.LENGTH, 0); }
-		public ExprContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_expr; }
+		public OperateExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterExpr(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterOperateExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitExpr(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitOperateExpr(this);
+		}
+	}
+	public static class IDExprContext extends ExprContext {
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
+		public IDExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterIDExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitIDExpr(this);
+		}
+	}
+	public static class TrueExprContext extends ExprContext {
+		public TerminalNode TRUE() { return getToken(MiniJavaParser.TRUE, 0); }
+		public TrueExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterTrueExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitTrueExpr(this);
+		}
+	}
+	public static class ParenthesisExprContext extends ExprContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public ParenthesisExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterParenthesisExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitParenthesisExpr(this);
+		}
+	}
+	public static class NewClassInstanceExprContext extends ExprContext {
+		public TerminalNode NEW() { return getToken(MiniJavaParser.NEW, 0); }
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
+		public NewClassInstanceExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterNewClassInstanceExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitNewClassInstanceExpr(this);
+		}
+	}
+	public static class NewIntArrayExprContext extends ExprContext {
+		public TerminalNode NEW() { return getToken(MiniJavaParser.NEW, 0); }
+		public TerminalNode INT() { return getToken(MiniJavaParser.INT, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public NewIntArrayExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterNewIntArrayExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitNewIntArrayExpr(this);
+		}
+	}
+	public static class IndexExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public IndexExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterIndexExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitIndexExpr(this);
+		}
+	}
+	public static class FalseExprContext extends ExprContext {
+		public TerminalNode FALSE() { return getToken(MiniJavaParser.FALSE, 0); }
+		public FalseExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterFalseExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitFalseExpr(this);
+		}
+	}
+	public static class LenghExprContext extends ExprContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TerminalNode LENGTH() { return getToken(MiniJavaParser.LENGTH, 0); }
+		public LenghExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterLenghExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitLenghExpr(this);
+		}
+	}
+	public static class CallExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
+		public CallExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterCallExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitCallExpr(this);
+		}
+	}
+	public static class IntExprContext extends ExprContext {
+		public TerminalNode INT_VAL() { return getToken(MiniJavaParser.INT_VAL, 0); }
+		public IntExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterIntExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitIntExpr(this);
+		}
+	}
+	public static class ComplementationExprContext extends ExprContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public ComplementationExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterComplementationExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitComplementationExpr(this);
+		}
+	}
+	public static class ThisExprContext extends ExprContext {
+		public TerminalNode THIS() { return getToken(MiniJavaParser.THIS, 0); }
+		public ThisExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterThisExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitThisExpr(this);
 		}
 	}
 
@@ -935,36 +1102,55 @@ public class MiniJavaParser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
 			case 1:
 				{
+				_localctx = new IntExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
 				setState(156);
 				match(INT_VAL);
 				}
 				break;
 			case 2:
 				{
+				_localctx = new TrueExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(157);
 				match(TRUE);
 				}
 				break;
 			case 3:
 				{
+				_localctx = new FalseExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(158);
 				match(FALSE);
 				}
 				break;
 			case 4:
 				{
+				_localctx = new IDExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(159);
 				match(ID);
 				}
 				break;
 			case 5:
 				{
+				_localctx = new ThisExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(160);
 				match(THIS);
 				}
 				break;
 			case 6:
 				{
+				_localctx = new NewIntArrayExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(161);
 				match(NEW);
 				setState(162);
@@ -979,6 +1165,9 @@ public class MiniJavaParser extends Parser {
 				break;
 			case 7:
 				{
+				_localctx = new NewClassInstanceExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(167);
 				match(NEW);
 				setState(168);
@@ -991,6 +1180,9 @@ public class MiniJavaParser extends Parser {
 				break;
 			case 8:
 				{
+				_localctx = new ComplementationExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(171);
 				match(BANG);
 				setState(172);
@@ -999,6 +1191,9 @@ public class MiniJavaParser extends Parser {
 				break;
 			case 9:
 				{
+				_localctx = new ParenthesisExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(173);
 				match(L_PAREN);
 				setState(174);
@@ -1022,7 +1217,7 @@ public class MiniJavaParser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 					case 1:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new OperateExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(179);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
@@ -1039,7 +1234,7 @@ public class MiniJavaParser extends Parser {
 						break;
 					case 2:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new IndexExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(182);
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
@@ -1053,7 +1248,7 @@ public class MiniJavaParser extends Parser {
 						break;
 					case 3:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new LenghExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(187);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
@@ -1065,7 +1260,7 @@ public class MiniJavaParser extends Parser {
 						break;
 					case 4:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new CallExprContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(190);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");

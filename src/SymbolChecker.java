@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
 
-public class DefPhase extends MiniJavaBaseListener {
+public class SymbolChecker extends MiniJavaBaseListener {
     ParseTreeProperty<Scope> scopes = new ParseTreeProperty<Scope>();
     Block globals;
     Scope currentScope;
@@ -48,7 +48,6 @@ public class DefPhase extends MiniJavaBaseListener {
     @Override
     public void exitMainClass(MiniJavaParser.MainClassContext ctx) {
         currentScope = currentScope.getOuterScope();
-        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class DefPhase extends MiniJavaBaseListener {
             // Check the inherited class
             String inheritedClassName = ctx.ID(1).getText();
             if (inheritedClassName != null && currentScope.lookup(inheritedClassName) == null) {
-                printError(ctx.ID(1).getSymbol(), "Inherited class " + className + " doesn't exist.");
+                printError(ctx.ID(1).getSymbol(), "Inherited class " + inheritedClassName + " doesn't exist.");
             }
         }
         ClassSymbol newClass = new ClassSymbol(className);
@@ -132,6 +131,11 @@ public class DefPhase extends MiniJavaBaseListener {
             }
         }
         saveScope(ctx, currentScope);
+    }
+
+    @Override
+    public void exitMethodDec(MiniJavaParser.MethodDecContext ctx) {
+        currentScope = currentScope.getOuterScope();
     }
 
     @Override
