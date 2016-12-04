@@ -5,11 +5,21 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import javax.swing.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) throws Exception {
-        ANTLRInputStream input = new ANTLRInputStream(System.in);
+        String inputFile = null;
+        if (args.length > 0) {
+            inputFile = args[0];
+        } else {
+            inputFile = "src/input/BinarySearch.java";
+        }
+        InputStream in = new FileInputStream(inputFile);
+        System.out.println("File loaded.");
+        ANTLRInputStream input = new ANTLRInputStream(in);
         MiniJavaLexer lexer = new MiniJavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MiniJavaParser parser = new MiniJavaParser(tokens);
