@@ -10,7 +10,7 @@ methodDec: PUBLIC type ID '(' (type ID (',' type ID)*)? ')' '{' (varDec)* (state
 type    : INT '[' ']'       #IntArrayType
         | BOOLEAN           #BooleanType
         | INT               #IntType
-        | ID                #CustomType
+        | ID                #ClassType
         ;
 statement: '{' (statement)* '}'                         #BraceStatement
          | IF '(' expr ')' statement ELSE statement     #IfStatement
@@ -19,18 +19,21 @@ statement: '{' (statement)* '}'                         #BraceStatement
          | ID '=' expr ';'                              #AssignStatement
          | ID '[' expr ']' '=' expr ';'                 #AssignArrayStatement
          ;
-expr    : expr ('&&' | '<' | '+' | '-' | '*') expr      #OperateExpr
+expr    : expr '&&' expr                                #AndExpr
+        | expr '<' expr                                 #LessExpr
+        | expr ('+' | '-') expr                         #PlusMinusExpr
+        | expr '*' expr                                 #TimesExpr
         | expr '[' expr ']'                             #IndexExpr
-        | expr '.' LENGTH                               #LenghExpr
+        | expr '.' LENGTH                               #LengthExpr
         | expr '.' ID '(' (expr (',' expr)*)? ')'       #CallExpr
         | INT_VAL                   #IntExpr
         | TRUE                      #TrueExpr
         | FALSE                     #FalseExpr
-        | ID                        #IDExpr
+        | ID                        #ClassExpr
         | THIS                      #ThisExpr
         | NEW INT '[' expr ']'      #NewIntArrayExpr
         | NEW ID '(' ')'            #NewClassInstanceExpr
-        | '!' expr                  #ComplementationExpr
+        | '!' expr                  #NotExpr
         | '(' expr ')'              #ParenthesisExpr
         ;
 
@@ -62,6 +65,7 @@ GE      : '>=';
 LE      : '<=';
 PLUS    : '+';
 MINUS   : '-';
+TIMES   : '*';
 BANG    : '!';
 AND     : '&&';
 OR      : '||';

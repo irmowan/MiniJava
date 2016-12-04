@@ -111,13 +111,13 @@ public class MiniJavaBaseListener implements MiniJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCustomType(MiniJavaParser.CustomTypeContext ctx) { }
+	@Override public void enterClassType(MiniJavaParser.ClassTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCustomType(MiniJavaParser.CustomTypeContext ctx) { }
+	@Override public void exitClassType(MiniJavaParser.ClassTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -195,25 +195,13 @@ public class MiniJavaBaseListener implements MiniJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperateExpr(MiniJavaParser.OperateExprContext ctx) { }
+	@Override public void enterAndExpr(MiniJavaParser.AndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperateExpr(MiniJavaParser.OperateExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIDExpr(MiniJavaParser.IDExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIDExpr(MiniJavaParser.IDExprContext ctx) { }
+	@Override public void exitAndExpr(MiniJavaParser.AndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -255,6 +243,30 @@ public class MiniJavaBaseListener implements MiniJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLengthExpr(MiniJavaParser.LengthExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLengthExpr(MiniJavaParser.LengthExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPlusMinusExpr(MiniJavaParser.PlusMinusExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPlusMinusExpr(MiniJavaParser.PlusMinusExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNewIntArrayExpr(MiniJavaParser.NewIntArrayExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -291,13 +303,25 @@ public class MiniJavaBaseListener implements MiniJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLenghExpr(MiniJavaParser.LenghExprContext ctx) { }
+	@Override public void enterLessExpr(MiniJavaParser.LessExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLenghExpr(MiniJavaParser.LenghExprContext ctx) { }
+	@Override public void exitLessExpr(MiniJavaParser.LessExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassExpr(MiniJavaParser.ClassExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassExpr(MiniJavaParser.ClassExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -327,13 +351,25 @@ public class MiniJavaBaseListener implements MiniJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComplementationExpr(MiniJavaParser.ComplementationExprContext ctx) { }
+	@Override public void enterNotExpr(MiniJavaParser.NotExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComplementationExpr(MiniJavaParser.ComplementationExprContext ctx) { }
+	@Override public void exitNotExpr(MiniJavaParser.NotExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTimesExpr(MiniJavaParser.TimesExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTimesExpr(MiniJavaParser.TimesExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

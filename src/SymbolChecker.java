@@ -62,7 +62,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
     public void enterVarDec(MiniJavaParser.VarDecContext ctx) {
         String varName = ctx.ID().getText();
         String typeName = ctx.type().getText();
-        VarType type = this.getTypeFromTypeName(typeName);
+        VarType type = getTypeFromTypeName(typeName);
         if (!type.equals(VarType.typeClass)) {
             currentScope.define(new VarSymbol(varName, type));
         } else {
@@ -131,6 +131,109 @@ public class SymbolChecker extends MiniJavaBaseListener {
     @Override
     public void exitBraceStatement(MiniJavaParser.BraceStatementContext ctx) {
         currentScope = currentScope.getOuterScope();
+    }
+
+    @Override
+    public void enterIfStatement(MiniJavaParser.IfStatementContext ctx) {
+
+    }
+
+    @Override
+    public void enterWhileStatement(MiniJavaParser.WhileStatementContext ctx) {
+
+    }
+
+    @Override
+    public void enterPrintStatement(MiniJavaParser.PrintStatementContext ctx) {
+
+    }
+
+    @Override
+    public void enterAssignStatement(MiniJavaParser.AssignStatementContext ctx) {
+
+    }
+
+    @Override
+    public void enterAssignArrayStatement(MiniJavaParser.AssignArrayStatementContext ctx) {
+
+    }
+
+    @Override
+    public void enterAndExpr(MiniJavaParser.AndExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterLessExpr(MiniJavaParser.LessExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterPlusMinusExpr(MiniJavaParser.PlusMinusExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterTimesExpr(MiniJavaParser.TimesExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterIndexExpr(MiniJavaParser.IndexExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterLengthExpr(MiniJavaParser.LengthExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterCallExpr(MiniJavaParser.CallExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterIntExpr(MiniJavaParser.IntExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterTrueExpr(MiniJavaParser.TrueExprContext ctx) {
+    }
+
+    @Override
+    public void enterFalseExpr(MiniJavaParser.FalseExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterClassExpr(MiniJavaParser.ClassExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterThisExpr(MiniJavaParser.ThisExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterNewIntArrayExpr(MiniJavaParser.NewIntArrayExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterNewClassInstanceExpr(MiniJavaParser.NewClassInstanceExprContext ctx) {
+    }
+
+    @Override
+    public void enterNotExpr(MiniJavaParser.NotExprContext ctx) {
+
+    }
+
+    @Override
+    public void enterParenthesisExpr(MiniJavaParser.ParenthesisExprContext ctx) {
+
     }
 
     static VarType getTypeFromTypeName(String typeName) {
