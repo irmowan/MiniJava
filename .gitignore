@@ -1,5 +1,6 @@
 # IDE
 .idea
+out/
 
 # Java
 *.class

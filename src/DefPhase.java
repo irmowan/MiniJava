@@ -59,7 +59,7 @@ public class DefPhase extends MiniJavaBaseListener {
             // Check the inherited class
             String inheritedClassName = ctx.ID(1).getText();
             if (inheritedClassName != null && currentScope.lookup(inheritedClassName) == null) {
-                printError(ctx.ID(1).getSymbol(), "Inherited Class " + className + " doesn't exist.");
+                printError(ctx.ID(1).getSymbol(), "Inherited class " + className + " doesn't exist.");
             }
         }
         ClassSymbol newClass = new ClassSymbol(className);
@@ -78,7 +78,7 @@ public class DefPhase extends MiniJavaBaseListener {
         String varName = ctx.ID().getText();
         String typeName = ctx.type().getText();
         VarType type = this.getTypeFromTypeName(typeName);
-        if (type != VarType.typeClass) {
+        if (!type.equals(VarType.typeClass)) {
             currentScope.define(new VarSymbol(varName, type));
         } else {
             Symbol classSymbol = currentScope.lookup(typeName);
@@ -87,7 +87,7 @@ public class DefPhase extends MiniJavaBaseListener {
                 printError(ctx.type().getStart(), "The class " + typeName + " doesn't exist.");
             } else if (classSymbol.getSymbolType() != SymbolType.classSymbol) {
                 // Type is not a class symbol.
-                printError(ctx.type().getStart(), typeName + " is not a Class Symbol.");
+                printError(ctx.type().getStart(), typeName + " is not a class symbol.");
             } else {
                 currentScope.define(new VarSymbol(varName, (ClassSymbol) classSymbol));
             }
@@ -96,7 +96,41 @@ public class DefPhase extends MiniJavaBaseListener {
 
     @Override
     public void enterMethodDec(MiniJavaParser.MethodDecContext ctx) {
+        String returnTypeName = ctx.type(0).getText();
+        String methodName = ctx.ID(0).getText();
+        VarType returnType = getTypeFromTypeName(returnTypeName);
+        if (!returnType.equals(VarType.typeClass)) {
+            currentScope.define(new MethodSymbol(methodName, returnType));
+        } else {
+            Symbol classSymbol = currentScope.lookup(returnTypeName);
+            if (classSymbol == null) {
+                printError(ctx.type(0).getStart(), "The class " + returnTypeName + " doesn't exist.");
+            } else if (classSymbol.getSymbolType() != SymbolType.classSymbol) {
+                printError(ctx.type(0).getStart(), returnTypeName + " is not a class symbol.");
+            } else {
+                currentScope.define(new MethodSymbol(methodName, (ClassSymbol) classSymbol));
+            }
+        }
         currentScope = new Block(currentScope);
+        List<MiniJavaParser.TypeContext> parameterTypes = ctx.type();
+        List<TerminalNode> parameterIDs = ctx.ID();
+        for (int i = 1; i < parameterTypes.size(); ++i) {
+            TerminalNode parameterID = parameterIDs.get(i);
+            MiniJavaParser.TypeContext parameterType = parameterTypes.get(i);
+            VarType parameterVarType = getTypeFromTypeName(parameterType.getText());
+            if (!parameterVarType.equals(VarType.typeClass)) {
+                currentScope.define(new VarSymbol(parameterID.getText(), parameterVarType));
+            } else {
+                Symbol classSymbol = currentScope.lookup(parameterType.getText());
+                if (classSymbol == null) {
+                    printError(parameterType.getStart(), "The class " + parameterType.getText() + " doesn't exist.");
+                } else if (classSymbol.getSymbolType() != SymbolType.classSymbol) {
+                    printError(parameterType.getStart(), parameterType.getText() + " is not a class symbol.");
+                } else {
+                    currentScope.define(new VarSymbol(parameterID.getText(), (ClassSymbol) classSymbol));
+                }
+            }
+        }
         saveScope(ctx, currentScope);
     }
 

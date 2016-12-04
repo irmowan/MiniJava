@@ -44,7 +44,7 @@ class BS extends AS{
 
     // Search for a specific value (num) using
     // binary search
-    public boolean Search(int num){
+    public boolean Search(int num, CS error_d, number e){
         boolean bs01 ;
         int right ;
         int left ;
