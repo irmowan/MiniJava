@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) throws Exception {
-        String inputFile = null;
+        String inputFile;
         if (args.length > 0) {
             inputFile = args[0];
         } else {

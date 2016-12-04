@@ -1,30 +1,18 @@
 // Created by irmo on 16/12/3.
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
 
 public class SymbolChecker extends MiniJavaBaseListener {
-    ParseTreeProperty<Scope> scopes = new ParseTreeProperty<Scope>();
-    Block globals;
+    Block globalScope;
     Scope currentScope;
-
-    public ParseTreeProperty<Scope> getScopes() {
-        return scopes;
-    }
-
-    public Block getGlobals() {
-        return globals;
-    }
 
     @Override
     public void enterProg(MiniJavaParser.ProgContext ctx) {
-        globals = new Block(null);
-        currentScope = globals;
-        saveScope(ctx, currentScope);
+        globalScope = new Block(null);
+        currentScope = globalScope;
     }
 
     @Override
@@ -42,7 +30,6 @@ public class SymbolChecker extends MiniJavaBaseListener {
         // Get the arguments
         String argsName = ctx.ID(1).getText();
         currentScope.define(new VarSymbol(argsName, VarType.typeStringArray));
-        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -64,7 +51,6 @@ public class SymbolChecker extends MiniJavaBaseListener {
         ClassSymbol newClass = new ClassSymbol(className);
         currentScope.define(newClass);
         currentScope = new Block(currentScope);
-        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -130,7 +116,6 @@ public class SymbolChecker extends MiniJavaBaseListener {
                 }
             }
         }
-        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -141,7 +126,6 @@ public class SymbolChecker extends MiniJavaBaseListener {
     @Override
     public void enterBraceStatement(MiniJavaParser.BraceStatementContext ctx) {
         currentScope = new Block(currentScope);
-        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -149,11 +133,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
         currentScope = currentScope.getOuterScope();
     }
 
-    void saveScope(ParserRuleContext ctx, Scope s) {
-        scopes.put(ctx, s);
-    }
-
-    VarType getTypeFromTypeName(String typeName) {
+    static VarType getTypeFromTypeName(String typeName) {
         if (typeName.equals("int[]")) {
             return VarType.typeIntArray;
         }
