@@ -57,15 +57,53 @@ public interface MiniJavaListener extends ParseTreeListener {
 	 */
 	void exitMethodDec(MiniJavaParser.MethodDecContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MiniJavaParser#type}.
+	 * Enter a parse tree produced by the {@code IntArrayType}
+	 * labeled alternative in {@link MiniJavaParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterType(MiniJavaParser.TypeContext ctx);
+	void enterIntArrayType(MiniJavaParser.IntArrayTypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MiniJavaParser#type}.
+	 * Exit a parse tree produced by the {@code IntArrayType}
+	 * labeled alternative in {@link MiniJavaParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitType(MiniJavaParser.TypeContext ctx);
+	void exitIntArrayType(MiniJavaParser.IntArrayTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BooleanType}
+	 * labeled alternative in {@link MiniJavaParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterBooleanType(MiniJavaParser.BooleanTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BooleanType}
+	 * labeled alternative in {@link MiniJavaParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitBooleanType(MiniJavaParser.BooleanTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IntType}
+	 * labeled alternative in {@link MiniJavaParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntType(MiniJavaParser.IntTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IntType}
+	 * labeled alternative in {@link MiniJavaParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntType(MiniJavaParser.IntTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CustomType}
+	 * labeled alternative in {@link MiniJavaParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterCustomType(MiniJavaParser.CustomTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CustomType}
+	 * labeled alternative in {@link MiniJavaParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitCustomType(MiniJavaParser.CustomTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code BraceStatement}
 	 * labeled alternative in {@link MiniJavaParser#statement}.

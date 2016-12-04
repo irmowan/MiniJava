@@ -7,10 +7,10 @@ mainClass: 'class' ID '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' ID ')' '{' 
 classDec : 'class' ID (EXTENDS ID)? '{' (varDec)* (methodDec)* '}';
 varDec   : type ID ';';
 methodDec: PUBLIC type ID '(' (type ID (',' type ID)*)? ')' '{' (varDec)* (statement)* RETURN expr ';' '}';
-type    : INT '[' ']'
-        | BOOLEAN
-        | INT
-        | ID
+type    : INT '[' ']'       #IntArrayType
+        | BOOLEAN           #BooleanType
+        | INT               #IntType
+        | ID                #CustomType
         ;
 statement: '{' (statement)* '}'                         #BraceStatement
          | IF '(' expr ')' statement ELSE statement     #IfStatement

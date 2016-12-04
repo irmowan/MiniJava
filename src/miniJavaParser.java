@@ -523,20 +523,62 @@ public class MiniJavaParser extends Parser {
 	}
 
 	public static class TypeContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(MiniJavaParser.INT, 0); }
-		public TerminalNode BOOLEAN() { return getToken(MiniJavaParser.BOOLEAN, 0); }
-		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
+	 
+		public TypeContext() { }
+		public void copyFrom(TypeContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class CustomTypeContext extends TypeContext {
+		public TerminalNode ID() { return getToken(MiniJavaParser.ID, 0); }
+		public CustomTypeContext(TypeContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterType(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterCustomType(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitType(this);
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitCustomType(this);
+		}
+	}
+	public static class IntArrayTypeContext extends TypeContext {
+		public TerminalNode INT() { return getToken(MiniJavaParser.INT, 0); }
+		public IntArrayTypeContext(TypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterIntArrayType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitIntArrayType(this);
+		}
+	}
+	public static class BooleanTypeContext extends TypeContext {
+		public TerminalNode BOOLEAN() { return getToken(MiniJavaParser.BOOLEAN, 0); }
+		public BooleanTypeContext(TypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterBooleanType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitBooleanType(this);
+		}
+	}
+	public static class IntTypeContext extends TypeContext {
+		public TerminalNode INT() { return getToken(MiniJavaParser.INT, 0); }
+		public IntTypeContext(TypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).enterIntType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MiniJavaListener ) ((MiniJavaListener)listener).exitIntType(this);
 		}
 	}
 
@@ -548,6 +590,7 @@ public class MiniJavaParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
+				_localctx = new IntArrayTypeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(104);
@@ -559,6 +602,7 @@ public class MiniJavaParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new BooleanTypeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(107);
@@ -566,6 +610,7 @@ public class MiniJavaParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new IntTypeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(108);
@@ -573,6 +618,7 @@ public class MiniJavaParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new CustomTypeContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(109);
