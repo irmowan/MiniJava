@@ -15,7 +15,7 @@ public class Test {
         if (args.length > 0) {
             inputFile = args[0];
         } else {
-            inputFile = "src/input/BinarySearch.java";
+            inputFile = "src/input/BinarySearch_Error.java";
         }
         InputStream in = new FileInputStream(inputFile);
         System.out.println("File loaded.");

@@ -2,5 +2,7 @@ public enum VarType {
     typeInt,
     typeIntArray,
     typeBoolean,
-    typeClass
+    typeString,
+    typeStringArray,
+    typeClass,
 }
