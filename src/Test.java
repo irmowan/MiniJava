@@ -27,8 +27,10 @@ public class Test {
 
         // Check symbols
         ParseTreeWalker walker = new ParseTreeWalker();
-        SymbolChecker checker = new SymbolChecker();
-        walker.walk(checker, tree);
+        DefPhase defPhase = new DefPhase();
+        walker.walk(defPhase, tree);
+        RefPhase refPhase = new RefPhase(defPhase.getGlobalScope(), defPhase.getScopes(), defPhase.getClassScopes());
+        walker.walk(refPhase, tree);
 
         // Show AST in console
         System.out.println(tree.toStringTree(parser));

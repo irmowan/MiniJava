@@ -1,6 +1,6 @@
 public class MethodSymbol extends Symbol {
     VarType returnType;
-    ClassSymbol returnClassName;
+    ClassSymbol returnClassSymbol;
 
     public MethodSymbol(String name) {
         super(name, SymbolType.methodSymbol);
@@ -14,10 +14,15 @@ public class MethodSymbol extends Symbol {
     public MethodSymbol(String name, ClassSymbol returnClassName) {
         super(name, SymbolType.methodSymbol);
         this.returnType = VarType.typeClass;
-        this.returnClassName = returnClassName;
+        this.returnClassSymbol = returnClassName;
     }
 
     public VarType getReturnType() {
         return returnType;
     }
+
+    public ClassSymbol getReturnClassSymbol() {
+        return returnClassSymbol;
+    }
+
 }

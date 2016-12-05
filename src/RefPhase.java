@@ -1,32 +1,27 @@
-// Created by irmo on 16/12/3.
-
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
+import java.util.Map;
 
-public class SymbolChecker extends MiniJavaBaseListener {
+public class RefPhase extends MiniJavaBaseListener {
     Block globalScope;
     Scope currentScope;
     ParseTreeProperty<Scope> scopes = new ParseTreeProperty<>();
+    Map<ClassSymbol, Scope> classScopes;
     ParseTreeProperty<VarType> exprType = new ParseTreeProperty<>();
     ParseTreeProperty<ClassSymbol> exprClassSymbol = new ParseTreeProperty<>();
 
-    public ParseTreeProperty<Scope> getScopes() {
-        return scopes;
-    }
-
-    public Block getGlobalScope() {
-        return globalScope;
+    RefPhase(Block globalScope, ParseTreeProperty<Scope> scopes, Map<ClassSymbol, Scope> classScopes) {
+        this.globalScope = globalScope;
+        this.scopes = scopes;
+        this.classScopes = classScopes;
     }
 
     @Override
     public void enterProg(MiniJavaParser.ProgContext ctx) {
-        globalScope = new Block(null);
         currentScope = globalScope;
-        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -36,16 +31,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
 
     @Override
     public void enterMainClass(MiniJavaParser.MainClassContext ctx) {
-        // Define class
-        String className = ctx.ID(0).getText();
-        ClassSymbol newClass = new ClassSymbol(className);
-        currentScope.define(newClass);
-
-        currentScope = new Block(currentScope, newClass);
-        // Get the arguments
-        String argsName = ctx.ID(1).getText();
-        currentScope.define(new VarSymbol(argsName, VarType.typeStringArray));
-        saveScope(ctx, currentScope);
+        currentScope = scopes.get(ctx);
     }
 
     @Override
@@ -55,7 +41,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
 
     @Override
     public void enterClassDec(MiniJavaParser.ClassDecContext ctx) {
-        String className = ctx.ID(0).getText();
+        currentScope = scopes.get(ctx);
         List<TerminalNode> IDs = ctx.ID();
         if (IDs.size() > 1) {
             // Check the inherited class
@@ -64,10 +50,6 @@ public class SymbolChecker extends MiniJavaBaseListener {
                 printError(ctx.ID(1).getSymbol(), "Inherited class " + inheritedClassName + " doesn't exist.");
             }
         }
-        ClassSymbol newClass = new ClassSymbol(className);
-        currentScope.define(newClass);
-        currentScope = new Block(currentScope, newClass);
-        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -98,22 +80,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
 
     @Override
     public void enterMethodDec(MiniJavaParser.MethodDecContext ctx) {
-        String returnTypeName = ctx.type(0).getText();
-        String methodName = ctx.ID(0).getText();
-        VarType returnType = getTypeFromTypeName(returnTypeName);
-        if (!returnType.equals(VarType.typeClass)) {
-            currentScope.define(new MethodSymbol(methodName, returnType));
-        } else {
-            Symbol classSymbol = currentScope.lookup(returnTypeName);
-            if (classSymbol == null) {
-                printError(ctx.type(0).getStart(), "The class " + returnTypeName + " doesn't exist.");
-            } else if (classSymbol.getSymbolType() != SymbolType.classSymbol) {
-                printError(ctx.type(0).getStart(), returnTypeName + " is not a class symbol.");
-            } else {
-                currentScope.define(new MethodSymbol(methodName, (ClassSymbol) classSymbol));
-            }
-        }
-        currentScope = new Block(currentScope);
+        currentScope = scopes.get(ctx);
         List<MiniJavaParser.TypeContext> parameterTypes = ctx.type();
         List<TerminalNode> parameterIDs = ctx.ID();
         for (int i = 1; i < parameterTypes.size(); ++i) {
@@ -133,7 +100,6 @@ public class SymbolChecker extends MiniJavaBaseListener {
                 }
             }
         }
-        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -143,14 +109,14 @@ public class SymbolChecker extends MiniJavaBaseListener {
 
     @Override
     public void enterBraceStatement(MiniJavaParser.BraceStatementContext ctx) {
-        currentScope = new Block(currentScope);
-        saveScope(ctx, currentScope);
+        currentScope = scopes.get(ctx);
     }
 
     @Override
     public void exitBraceStatement(MiniJavaParser.BraceStatementContext ctx) {
         currentScope = currentScope.getOuterScope();
     }
+
 
     @Override
     public void exitIfStatement(MiniJavaParser.IfStatementContext ctx) {
@@ -170,16 +136,19 @@ public class SymbolChecker extends MiniJavaBaseListener {
 
     @Override
     public void exitPrintStatement(MiniJavaParser.PrintStatementContext ctx) {
-        // Here, Print Check will meet not forward reference.
-//        MiniJavaParser.ExprContext exprCtx = ctx.expr();
-//        switch (exprType.get(exprCtx)) {
-//            case typeInt:
-//            case typeString:
-//            case typeBoolean:
-//                break;
-//            default:
-//                printError(exprCtx.getStart(), "The printed expression must be int/string/boolean expression.");
-//        }
+        try {
+            MiniJavaParser.ExprContext exprCtx = ctx.expr();
+            switch (exprType.get(exprCtx)) {
+                case typeInt:
+                case typeString:
+                case typeBoolean:
+                    break;
+                default:
+                    printError(exprCtx.getStart(), "The printed expression must be int/string/boolean expression.");
+            }
+        } catch (Exception e) {
+            printError(ctx.getStart(), e.getMessage());
+        }
     }
 
     @Override
@@ -316,7 +285,30 @@ public class SymbolChecker extends MiniJavaBaseListener {
 
     @Override
     public void exitCallExpr(MiniJavaParser.CallExprContext ctx) {
-
+        String methodName = ctx.ID().getText();
+        MiniJavaParser.ExprContext classCtx = ctx.expr(0);
+        ClassSymbol classSymbol = exprClassSymbol.get(classCtx);
+        if (classSymbol == null) {
+            printError(classCtx.getStart(), "call error: The class " + classCtx.getText() + " doesn't exist.");
+            exprType.put(ctx, VarType.typeInt);
+        } else if (classSymbol.getSymbolType() != SymbolType.classSymbol) {
+            printError(classCtx.getStart(), classCtx.getText() + " is not a class symbol");
+            exprType.put(ctx, VarType.typeInt);
+        } else {
+            Symbol calledMethod = classScopes.get(classSymbol).lookup(methodName);
+            if (calledMethod == null || calledMethod.getSymbolType() != SymbolType.methodSymbol) {
+                printError(ctx.ID().getSymbol(), "The method " + methodName + " doesn't exist or is not a method symbol.");
+                exprType.put(ctx, VarType.typeInt);
+            } else if (exprType.get(classCtx) != VarType.typeClass) {
+                printError(ctx.expr(0).getStart(), "Invalid class expression.");
+                exprType.put(ctx, VarType.typeInt);
+            } else {
+                exprType.put(ctx, ((MethodSymbol) calledMethod).getReturnType());
+                if (((MethodSymbol)calledMethod).getReturnType() == VarType.typeClass) {
+                    exprClassSymbol.put(ctx, ((MethodSymbol) calledMethod).getReturnClassSymbol());
+                }
+            }
+        }
     }
 
     @Override
@@ -342,14 +334,21 @@ public class SymbolChecker extends MiniJavaBaseListener {
         } else {
             switch (symbol.getSymbolType()) {
                 case classSymbol:
-                    exprType.put(ctx, VarType.typeClass);
-                    exprClassSymbol.put(ctx, (ClassSymbol) symbol);
-                    break;
-                case varSymbol:
-                    exprType.put(ctx, ((VarSymbol) symbol).getVarType());
+                    printError(ctx.getStart(), "Expected to get instance but class symbol " + ctx.getText() + ".");
                     break;
                 case methodSymbol:
                     printError(ctx.getStart(), "Expected to get class but method symbol " + ctx.getText() + ".");
+                    break;
+                case varSymbol:
+                    VarSymbol varSymbol = (VarSymbol) symbol;
+                    switch (varSymbol.getVarType()) {
+                        case typeClass:
+                            exprType.put(ctx, varSymbol.getVarType());
+                            exprClassSymbol.put(ctx, varSymbol.getClassType());
+                            break;
+                        default:
+                            exprType.put(ctx, varSymbol.getVarType());
+                    }
             }
         }
     }
@@ -384,7 +383,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
     @Override
     public void exitNotExpr(MiniJavaParser.NotExprContext ctx) {
         if (exprType.get(ctx.expr()) != VarType.typeBoolean) {
-            printError(ctx.expr().getStart(), "Not operator must be operated on boolean variable.");
+            printError(ctx.expr().getStart(), "! operator must be operated on boolean variable.");
         }
         exprType.put(ctx, VarType.typeBoolean);
     }
@@ -392,10 +391,9 @@ public class SymbolChecker extends MiniJavaBaseListener {
     @Override
     public void exitParenthesisExpr(MiniJavaParser.ParenthesisExprContext ctx) {
         exprType.put(ctx, exprType.get(ctx.expr()));
-    }
-
-    void saveScope(ParserRuleContext ctx, Scope s) {
-        scopes.put(ctx, s);
+        if (exprType.get(ctx.expr()) == VarType.typeClass) {
+            exprClassSymbol.put(ctx, exprClassSymbol.get(ctx.expr()));
+        }
     }
 
     static VarType getTypeFromTypeName(String typeName) {
