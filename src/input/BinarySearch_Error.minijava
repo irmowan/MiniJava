@@ -119,6 +119,7 @@ class BS extends AS{
             j = j + 1 ;
         }
         System.out.println(99999);
+        System.out.println(BS);
         return 0 ;
     }
 
@@ -131,8 +132,10 @@ class BS extends AS{
         int aux01 ;
 
         size = sz ;
+        t = new CS();
         number = new int[sz] ;
-
+        error_test = new int[true];
+        j = i + true;
         j = 1 ;
         k = size + 1 ;
         while (j < (size)) {

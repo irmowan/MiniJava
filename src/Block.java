@@ -4,14 +4,28 @@ import java.util.Map;
 public class Block implements Scope {
     Scope outerScope;
     Map<String, Symbol> symbols = new LinkedHashMap<>();
+    ClassSymbol outerClass;
 
     public Block(Scope outerScope) {
         this.outerScope = outerScope;
+        if (outerScope != null) {
+            this.outerClass = outerScope.getOuterClass();
+        }
+    }
+
+    public Block(Scope outerScope, ClassSymbol classSymbol) {
+        this.outerScope = outerScope;
+        this.outerClass = classSymbol;
     }
 
     @Override
     public Scope getOuterScope() {
-        return this.outerScope;
+        return outerScope;
+    }
+
+    @Override
+    public ClassSymbol getOuterClass() {
+        return outerClass;
     }
 
     @Override

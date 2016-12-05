@@ -1,6 +1,7 @@
 // Created by irmo on 16/12/3.
 
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 public class SymbolChecker extends MiniJavaBaseListener {
     Block globalScope;
     Scope currentScope;
+    ParseTreeProperty<VarType> exprType = new ParseTreeProperty<>();
+    ParseTreeProperty<ClassSymbol> exprClassSymbol = new ParseTreeProperty<>();
 
     @Override
     public void enterProg(MiniJavaParser.ProgContext ctx) {
@@ -24,9 +27,10 @@ public class SymbolChecker extends MiniJavaBaseListener {
     public void enterMainClass(MiniJavaParser.MainClassContext ctx) {
         // Define class
         String className = ctx.ID(0).getText();
-        currentScope.define(new ClassSymbol(className));
+        ClassSymbol newClass = new ClassSymbol(className);
+        currentScope.define(newClass);
 
-        currentScope = new Block(currentScope);
+        currentScope = new Block(currentScope, newClass);
         // Get the arguments
         String argsName = ctx.ID(1).getText();
         currentScope.define(new VarSymbol(argsName, VarType.typeStringArray));
@@ -50,7 +54,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
         }
         ClassSymbol newClass = new ClassSymbol(className);
         currentScope.define(newClass);
-        currentScope = new Block(currentScope);
+        currentScope = new Block(currentScope, newClass);
     }
 
     @Override
@@ -134,106 +138,245 @@ public class SymbolChecker extends MiniJavaBaseListener {
     }
 
     @Override
-    public void enterIfStatement(MiniJavaParser.IfStatementContext ctx) {
+    public void exitIfStatement(MiniJavaParser.IfStatementContext ctx) {
+        MiniJavaParser.ExprContext exprCtx = ctx.expr();
+        if (exprType.get(exprCtx) != VarType.typeBoolean) {
+            printError(exprCtx.getStart(), "The condition of the If statement must be boolean expression.");
+        }
+    }
+
+    @Override
+    public void exitWhileStatement(MiniJavaParser.WhileStatementContext ctx) {
+        MiniJavaParser.ExprContext exprCtx = ctx.expr();
+        if (exprType.get(exprCtx) != VarType.typeBoolean) {
+            printError(exprCtx.getStart(), "The condition of the While statement must be boolean expression.");
+        }
+    }
+
+    @Override
+    public void exitPrintStatement(MiniJavaParser.PrintStatementContext ctx) {
+        // Here, Print Check will meet not forward reference.
+//        MiniJavaParser.ExprContext exprCtx = ctx.expr();
+//        switch (exprType.get(exprCtx)) {
+//            case typeInt:
+//            case typeString:
+//            case typeBoolean:
+//                break;
+//            default:
+//                printError(exprCtx.getStart(), "The printed expression must be int/string/boolean expression.");
+//        }
+    }
+
+    @Override
+    public void exitAssignStatement(MiniJavaParser.AssignStatementContext ctx) {
+        String ID = ctx.ID().getText();
+        Symbol IDSymbol = currentScope.lookup(ID);
+        if (IDSymbol == null) {
+            printError(ctx.ID().getSymbol(), "Symbol " + ID + " doesn't exist.");
+        } else if (IDSymbol.getSymbolType() != SymbolType.varSymbol) {
+            printError(ctx.ID().getSymbol(), "Symbol " + ID + " is not an variable symbol.");
+        } else if (((VarSymbol) IDSymbol).getVarType() != exprType.get(ctx.expr())) {
+            printError(ctx.ID().getSymbol(), "Symbol " + ID + " is not matched with expression.");
+        }
+    }
+
+    @Override
+    public void exitAssignArrayStatement(MiniJavaParser.AssignArrayStatementContext ctx) {
+        String ID = ctx.ID().getText();
+        Symbol IDSymbol = currentScope.lookup(ID);
+        MiniJavaParser.ExprContext exprCtx1 = ctx.expr(0);
+        MiniJavaParser.ExprContext exprCtx2 = ctx.expr(1);
+        if (exprType.get(exprCtx1) != VarType.typeInt) {
+            printError(exprCtx1.getStart(), "The index must be int expression.");
+        }
+        if (IDSymbol == null) {
+            printError(ctx.ID().getSymbol(), "Symbol " + ID + " doesn't exist.");
+        } else if (IDSymbol.getSymbolType() != SymbolType.varSymbol) {
+            printError(ctx.ID().getSymbol(), "Symbol " + ID + " is not an variable symbol.");
+        } else {
+            VarType IDType = ((VarSymbol) IDSymbol).getVarType();
+            VarType assignType = exprType.get(exprCtx2);
+            switch (IDType) {
+                case typeIntArray:
+                    if (assignType != VarType.typeInt) {
+                        printError(ctx.getStart(), "The symbol " + ID + " is an int array, but expression not matched.");
+                    }
+                    break;
+                case typeStringArray:
+                    if (assignType != VarType.typeString) {
+                        printError(ctx.getStart(), "The symbol " + ID + " is a string array, but expression not matched.");
+                    }
+                    break;
+                default:
+                    printError(ctx.getStart(), "The symbol " + ID + " is not an array of int/string.");
+            }
+        }
+    }
+
+    @Override
+    public void exitAndExpr(MiniJavaParser.AndExprContext ctx) {
+        MiniJavaParser.ExprContext exprCtx1 = ctx.expr(0);
+        MiniJavaParser.ExprContext exprCtx2 = ctx.expr(1);
+        if (exprType.get(exprCtx1) != VarType.typeBoolean) {
+            printError(exprCtx1.getStart(), "The && operator must be operated on two boolean expression.");
+        }
+        if (exprType.get(exprCtx2) != VarType.typeBoolean) {
+            printError(exprCtx2.getStart(), "The && operator must be operated on two boolean expression.");
+        }
+        exprType.put(ctx, VarType.typeBoolean);
+    }
+
+    @Override
+    public void exitLessExpr(MiniJavaParser.LessExprContext ctx) {
+        MiniJavaParser.ExprContext exprCtx1 = ctx.expr(0);
+        MiniJavaParser.ExprContext exprCtx2 = ctx.expr(1);
+        if (exprType.get(exprCtx1) != VarType.typeInt) {
+            printError(exprCtx1.getStart(), "The < operator must be operated on two int expression.");
+        }
+        if (exprType.get(exprCtx2) != VarType.typeInt) {
+            printError(exprCtx2.getStart(), "The < operator must be operated on two int expression.");
+        }
+        exprType.put(ctx, VarType.typeBoolean);
+    }
+
+    @Override
+    public void exitPlusMinusExpr(MiniJavaParser.PlusMinusExprContext ctx) {
+        MiniJavaParser.ExprContext exprCxt1 = ctx.expr(0);
+        MiniJavaParser.ExprContext exprCxt2 = ctx.expr(1);
+        if (exprType.get(exprCxt1) != VarType.typeInt) {
+            printError(exprCxt1.getStart(), "The +/- operator must be operated on two int expression.");
+        }
+        if (exprType.get(exprCxt2) != VarType.typeInt) {
+            printError(exprCxt2.getStart(), "The +/- operator must be operated on two int expression.");
+        }
+        exprType.put(ctx, VarType.typeInt);
+    }
+
+    @Override
+    public void exitTimesExpr(MiniJavaParser.TimesExprContext ctx) {
+        MiniJavaParser.ExprContext exprCxt1 = ctx.expr(0);
+        MiniJavaParser.ExprContext exprCxt2 = ctx.expr(1);
+        if (exprType.get(exprCxt1) != VarType.typeInt) {
+            printError(exprCxt1.getStart(), "The * operator must be operated on two int expression.");
+        }
+        if (exprType.get(exprCxt2) != VarType.typeInt) {
+            printError(exprCxt2.getStart(), "The * operator must be operated on two int expression.");
+        }
+        exprType.put(ctx, VarType.typeInt);
+    }
+
+    @Override
+    public void exitIndexExpr(MiniJavaParser.IndexExprContext ctx) {
+        MiniJavaParser.ExprContext exprCtx1 = ctx.expr(0);
+        MiniJavaParser.ExprContext exprCtx2 = ctx.expr(1);
+        switch (exprType.get(exprCtx1)) {
+            case typeIntArray:
+                exprType.put(ctx, VarType.typeInt);
+                break;
+            case typeStringArray:
+                exprType.put(ctx, VarType.typeString);
+                break;
+            default:
+                printError(exprCtx1.getStart(), exprCtx1.getText() + " is not an array of int/string.");
+                // Error recovery
+                exprType.put(ctx, VarType.typeInt);
+        }
+        if (exprType.get(exprCtx2) != VarType.typeInt) {
+            printError(exprCtx2.getStart(), exprCtx2.getText() + " is not an int expression.");
+        }
+    }
+
+    @Override
+    public void exitLengthExpr(MiniJavaParser.LengthExprContext ctx) {
+        MiniJavaParser.ExprContext exprCtx = ctx.expr();
+        switch (exprType.get(exprCtx)) {
+            case typeIntArray:
+            case typeStringArray:
+                break;
+            default:
+                printError(exprCtx.getStart(), exprCtx.getText() + " is not an array of int/string");
+        }
+        exprType.put(ctx, VarType.typeInt);
+    }
+
+    @Override
+    public void exitCallExpr(MiniJavaParser.CallExprContext ctx) {
 
     }
 
     @Override
-    public void enterWhileStatement(MiniJavaParser.WhileStatementContext ctx) {
-
+    public void exitIntExpr(MiniJavaParser.IntExprContext ctx) {
+        exprType.put(ctx, VarType.typeInt);
     }
 
     @Override
-    public void enterPrintStatement(MiniJavaParser.PrintStatementContext ctx) {
-
+    public void exitTrueExpr(MiniJavaParser.TrueExprContext ctx) {
+        exprType.put(ctx, VarType.typeBoolean);
     }
 
     @Override
-    public void enterAssignStatement(MiniJavaParser.AssignStatementContext ctx) {
-
+    public void exitFalseExpr(MiniJavaParser.FalseExprContext ctx) {
+        exprType.put(ctx, VarType.typeBoolean);
     }
 
     @Override
-    public void enterAssignArrayStatement(MiniJavaParser.AssignArrayStatementContext ctx) {
-
+    public void exitClassExpr(MiniJavaParser.ClassExprContext ctx) {
+        Symbol symbol = currentScope.lookup(ctx.getText());
+        if (symbol == null) {
+            printError(ctx.getStart(), "The class " + ctx.getText() + " doesn't exist.");
+        } else {
+            switch (symbol.getSymbolType()) {
+                case classSymbol:
+                    exprType.put(ctx, VarType.typeClass);
+                    exprClassSymbol.put(ctx, (ClassSymbol) symbol);
+                    break;
+                case varSymbol:
+                    exprType.put(ctx, ((VarSymbol) symbol).getVarType());
+                    break;
+                case methodSymbol:
+                    printError(ctx.getStart(), "Expected to get class but method symbol " + ctx.getText() + ".");
+            }
+        }
     }
 
     @Override
-    public void enterAndExpr(MiniJavaParser.AndExprContext ctx) {
-
+    public void exitThisExpr(MiniJavaParser.ThisExprContext ctx) {
+        exprType.put(ctx, VarType.typeClass);
+        exprClassSymbol.put(ctx, currentScope.getOuterClass());
     }
 
     @Override
-    public void enterLessExpr(MiniJavaParser.LessExprContext ctx) {
-
+    public void exitNewIntArrayExpr(MiniJavaParser.NewIntArrayExprContext ctx) {
+        if (exprType.get(ctx.expr()) != VarType.typeInt) {
+            printError(ctx.expr().getStart(), "The index of the array must be Int.");
+        }
+        exprType.put(ctx, VarType.typeIntArray);
     }
 
     @Override
-    public void enterPlusMinusExpr(MiniJavaParser.PlusMinusExprContext ctx) {
-
+    public void exitNewClassInstanceExpr(MiniJavaParser.NewClassInstanceExprContext ctx) {
+        Symbol newInstance = currentScope.lookup(ctx.ID().getText());
+        if (newInstance == null) {
+            printError(ctx.ID().getSymbol(), "The symbol " + ctx.ID().getText() + " doesn't exist.");
+        } else if (newInstance.getSymbolType() != SymbolType.classSymbol) {
+            printError(ctx.ID().getSymbol(), "The symbol " + ctx.ID().getText() + " is not a class symbol.");
+        } else {
+            exprType.put(ctx, VarType.typeClass);
+            exprClassSymbol.put(ctx, (ClassSymbol) newInstance);
+        }
     }
 
     @Override
-    public void enterTimesExpr(MiniJavaParser.TimesExprContext ctx) {
-
+    public void exitNotExpr(MiniJavaParser.NotExprContext ctx) {
+        if (exprType.get(ctx.expr()) != VarType.typeBoolean) {
+            printError(ctx.expr().getStart(), "Not operator must be operated on boolean variable.");
+        }
+        exprType.put(ctx, VarType.typeBoolean);
     }
 
     @Override
-    public void enterIndexExpr(MiniJavaParser.IndexExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterLengthExpr(MiniJavaParser.LengthExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterCallExpr(MiniJavaParser.CallExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterIntExpr(MiniJavaParser.IntExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterTrueExpr(MiniJavaParser.TrueExprContext ctx) {
-    }
-
-    @Override
-    public void enterFalseExpr(MiniJavaParser.FalseExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterClassExpr(MiniJavaParser.ClassExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterThisExpr(MiniJavaParser.ThisExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterNewIntArrayExpr(MiniJavaParser.NewIntArrayExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterNewClassInstanceExpr(MiniJavaParser.NewClassInstanceExprContext ctx) {
-    }
-
-    @Override
-    public void enterNotExpr(MiniJavaParser.NotExprContext ctx) {
-
-    }
-
-    @Override
-    public void enterParenthesisExpr(MiniJavaParser.ParenthesisExprContext ctx) {
-
+    public void exitParenthesisExpr(MiniJavaParser.ParenthesisExprContext ctx) {
+        exprType.put(ctx, exprType.get(ctx.expr()));
     }
 
     static VarType getTypeFromTypeName(String typeName) {
