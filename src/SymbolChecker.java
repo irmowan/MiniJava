@@ -1,5 +1,6 @@
 // Created by irmo on 16/12/3.
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -9,13 +10,23 @@ import java.util.List;
 public class SymbolChecker extends MiniJavaBaseListener {
     Block globalScope;
     Scope currentScope;
+    ParseTreeProperty<Scope> scopes = new ParseTreeProperty<>();
     ParseTreeProperty<VarType> exprType = new ParseTreeProperty<>();
     ParseTreeProperty<ClassSymbol> exprClassSymbol = new ParseTreeProperty<>();
+
+    public ParseTreeProperty<Scope> getScopes() {
+        return scopes;
+    }
+
+    public Block getGlobalScope() {
+        return globalScope;
+    }
 
     @Override
     public void enterProg(MiniJavaParser.ProgContext ctx) {
         globalScope = new Block(null);
         currentScope = globalScope;
+        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -34,6 +45,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
         // Get the arguments
         String argsName = ctx.ID(1).getText();
         currentScope.define(new VarSymbol(argsName, VarType.typeStringArray));
+        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -55,6 +67,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
         ClassSymbol newClass = new ClassSymbol(className);
         currentScope.define(newClass);
         currentScope = new Block(currentScope, newClass);
+        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -120,6 +133,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
                 }
             }
         }
+        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -130,6 +144,7 @@ public class SymbolChecker extends MiniJavaBaseListener {
     @Override
     public void enterBraceStatement(MiniJavaParser.BraceStatementContext ctx) {
         currentScope = new Block(currentScope);
+        saveScope(ctx, currentScope);
     }
 
     @Override
@@ -377,6 +392,10 @@ public class SymbolChecker extends MiniJavaBaseListener {
     @Override
     public void exitParenthesisExpr(MiniJavaParser.ParenthesisExprContext ctx) {
         exprType.put(ctx, exprType.get(ctx.expr()));
+    }
+
+    void saveScope(ParserRuleContext ctx, Scope s) {
+        scopes.put(ctx, s);
     }
 
     static VarType getTypeFromTypeName(String typeName) {
