@@ -3,10 +3,8 @@
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DefPhase extends MiniJavaBaseListener {
@@ -14,8 +12,6 @@ public class DefPhase extends MiniJavaBaseListener {
     Scope currentScope;
     ParseTreeProperty<Scope> scopes = new ParseTreeProperty<>();
     Map<ClassSymbol, Scope> classScopes = new LinkedHashMap<>();
-//    ParseTreeProperty<VarType> exprType = new ParseTreeProperty<>();
-//    ParseTreeProperty<ClassSymbol> exprClassSymbol = new ParseTreeProperty<>();
 
     public ParseTreeProperty<Scope> getScopes() {
         return scopes;

@@ -2,10 +2,6 @@ public class MethodSymbol extends Symbol {
     VarType returnType;
     ClassSymbol returnClassSymbol;
 
-    public MethodSymbol(String name) {
-        super(name, SymbolType.methodSymbol);
-    }
-
     public MethodSymbol(String name, VarType returnType) {
         super(name, SymbolType.methodSymbol);
         this.returnType = returnType;

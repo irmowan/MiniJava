@@ -31,7 +31,6 @@ public class Block implements Scope {
     @Override
     public void define(Symbol symbol) {
         symbols.put(symbol.getName(), symbol);
-        symbol.setScope(this);
     }
 
     @Override

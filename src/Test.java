@@ -42,7 +42,7 @@ public class Test {
         viewer.setScale(1.0);
         panel.add(viewer);
         frame.add(panel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(800, 400);
         frame.setVisible(true);
     }
