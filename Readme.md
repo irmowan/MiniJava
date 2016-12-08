@@ -22,6 +22,14 @@ java Test input/BinarySearch.minijava
 
 Use `java Test [file path]` to run the main class, the default file path is `input/BinarySearch.minijava`.
 
+If you just want to see the default lexer and parser, you can run:
+
+```shell
+alias antlr4='java -jar /usr/local/lib/antlr-4.5.3-complete.jar'
+alias grun='java org.antlr.v4.gui.TestRig'
+grun MiniJava prog -gui
+```
+
 ---
 
 Author: [irmo](https://github.com/irmowan)
